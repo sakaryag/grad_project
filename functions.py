@@ -2,10 +2,11 @@ from init import initiation
 class Functions(initiation):
     #check tactile paving
 
-    def check_availability(drone,job):
+    def check_availability(drone,time_start,time_end):
         #add way to go and return
-        for x in range(initiation.Job[job][3].astype(int)):
-            if(initiation.Drone[drone][x]==1):
+
+        for x in range (time_end-time_start):
+            if(initiation.Drone[drone][x+time_start]==1):
                 return 0
         return 1
     def tp(vector):
@@ -38,12 +39,12 @@ class Functions(initiation):
 
     #return time calculator
     def r(i,j):
-        return ft(i,j);
-
+        #return ft(i,j);
+        return 2
     #going time calculator
     def g(i,j):
-        return ft(i,j);
-
+        #return ft(i,j);
+        return 2
     #recharging time calculator
     def ct(i):
         θ=1
