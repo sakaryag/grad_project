@@ -14,7 +14,6 @@ class PriorityQueue(object):
     # for inserting an element in the queue
     def insert(self, data):
         self.queue.append(data)
-
     # for popping an element based on Priority
     def delete(self):
         try:
@@ -28,3 +27,12 @@ class PriorityQueue(object):
         except IndexError:
             print()
             exit()
+    def delete_dif(self):
+        min = 0
+        for i in range(len(self.queue)):
+            if self.queue[i][1]+self.queue[i][2] < self.queue[min][1]+self.queue[min][2]:
+                min = i
+            
+        item = self.queue[min]
+        del self.queue[min]
+        return item

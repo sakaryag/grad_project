@@ -5,14 +5,14 @@ import my_method
 import functions
 import init
 
-def Factory(method,mes):
+def Factory(method):
 
     method_name = {
         "1": first_come,
         "2": shortest_time,
         "3": my_method,
     }
-    ret=method_name[method].method.assign(mes)
+    ret=method_name[method].method.assign()
 
     return ret
 
@@ -23,6 +23,4 @@ if __name__ == "__main__":
     print('3 -> New Method')
 
     x= input()
-    message = ["a", "b", "c"]
-    a = Factory(x,message[0])
-    print(a)
+    a = Factory(x)

@@ -1,18 +1,51 @@
 from init import initiation
 from functions import Functions
+from queue import PriorityQueue
 
 class method(initiation):
 
     def max(a,b):
+        if (a>b):
+            return a
+        return b
 
-        return 2
+    def assign_operation(job,drone,t):
 
-    def find_available():
-        return 2
-    def assign(sth):
-        as_time=0
-        for y in range(initiation.drone_counter):
+        time= initiation.Job[job][3]
+        initiation.result[job][drone]=1
+        initiation.Job[job][4]=t+Functions.g(job,drone)
+        for x in range( time.astype(int)+Functions.g(job,drone)+Functions.r(job,drone)):
+            initiation.Drone[drone][x+t]=1
+        return 1;
+
+
+    def assign():
+        print(initiation.Job)
+
+
+        for y in range(initiation.job_counter):
+            as_time=PriorityQueue()
+
             for x in range(initiation.job_counter):
-                as_time=method.max(method.find_available(),initiation.Job[x][5])+Functions.g(x,y)+Functions.r(x,y)
+                time= initiation.Job[x][3]
+                for t in range(10*initiation.max_time.astype(int)):
+                    if(initiation.Job[x][4]==-1):
+                        if(Functions.check_availability(y%initiation.drone_counter,t,t+Functions.g(x,y%initiation.drone_counter)+Functions.r(x,y%initiation.drone_counter)+time.astype(int))==1):
+                            temp=method.max(t,initiation.Job[x][5].astype(int))
+                            as_time.insert((x,temp,Functions.g(x,y%initiation.drone_counter)+Functions.r(x,y%initiation.drone_counter)+time.astype(int)))
+                            break;
+        #    print(as_time)
+            tem=as_time.delete_dif()
+            #j,t=tem
+            time= initiation.Job[tem[0]][3]
+            method.assign_operation(tem[0],y%initiation.drone_counter,tem[1])
+            print(y%initiation.drone_counter ,tem[0] ,tem[1],tem[1]+Functions.g(tem[0],y%initiation.drone_counter)+Functions.r(tem[0],y%initiation.drone_counter)+time.astype(int))
 
-        return sth
+        total_waiting=0
+        for i in range(initiation.job_counter):
+            total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
+        print(total_waiting/initiation.job_counter)
+        print(initiation.Job)
+
+        print(initiation.result)
+        return 0

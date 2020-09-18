@@ -12,13 +12,13 @@ class method(initiation):
             if(Functions.check_availability(y,t,t+Functions.g(job,y)+Functions.r(job,y)+time.astype(int))==1):
                 initiation.result[job][y]=1
                 initiation.Job[job][4]=t+Functions.g(job,y)
-                print(y ,job ,t,t+Functions.g(job,y)+Functions.r(job,y)+time.astype(int))
-                for x in range( time.astype(int)+t+Functions.g(job,y)+Functions.r(job,y)):
+                print(y ,job ,t,Functions.g(job,y),Functions.r(job,y),time.astype(int))
+                for x in range( time.astype(int)+Functions.g(job,y)+Functions.r(job,y)):
                     initiation.Drone[y][x+t]=1
                 return 1;
         return 0;
 
-    def assign(sth):
+    def assign():
 
         print('2D Numpy Array')
         print(initiation.Job)
@@ -30,16 +30,21 @@ class method(initiation):
 
         print(sortedArr)
         temp = np.zeros(initiation.job_counter)
-        for t in range(initiation.max_time.astype(int)):
+        for t in range(6*initiation.max_time.astype(int)):
             count=0
             for x in range(initiation.job_counter):
                 if(initiation.Job[sortedArr[x][0]][4]==-1):
                     if(sortedArr[x][5]<=t):
-                        queue.insert    (sortedArr[x][0])
+                        queue.insert(sortedArr[x][0])
                         count+=1
             while not queue.isEmpty():
                 method.assign_operation(queue.delete(),t)
+        total_waiting=0
+        for i in range(initiation.job_counter):
+            total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
+        print(total_waiting/initiation.job_counter)
+        print(initiation.Job)
 
         print(initiation.result)
 
-        return sth
+        return 0
