@@ -3,7 +3,9 @@ from functions import Functions
 import numpy as np
 class method(initiation):
 
-    def assign_operation(job):
+    def __init__(self):
+            self.assign()
+    def assign_operation(self,job):
 
         time= initiation.Job[job][3]
         for t in range(6*initiation.max_time.astype(int)):
@@ -18,7 +20,7 @@ class method(initiation):
                         return 1;
         return 0;
 
-    def assign():
+    def assign(self):
 
         print('2D Numpy Array')
         print(initiation.Job)
@@ -29,7 +31,7 @@ class method(initiation):
         print(sortedArr)
 
         for x in range(initiation.job_counter):
-            method.assign_operation(sortedArr[x][0])
+            method.assign_operation(self,sortedArr[x][0])
         total_waiting=0
         for i in range(initiation.job_counter):
             total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]

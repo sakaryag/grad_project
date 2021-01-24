@@ -8,7 +8,7 @@ class Functions(initiation):
 
     def check_availability(drone,time_start,time_end):
         #add way to go and return
-        
+
         for x in range (time_end-time_start):
             if(initiation.Drone[drone][x+time_start]==1):
                 return 0
@@ -30,10 +30,10 @@ class Functions(initiation):
 
     #consumption calculator
     def consumption(job):
-        α=1
-        β=2
-        γ=3
-        ret=E_i[job]*(α*Job[2][job])+D_i[job]*(β*Job[2][job])+J_i *(γ*Job[2][job])
+        alpha=1
+        beta=2
+        gamma=3
+        ret=E_i[job]*(alpha*Job[2][job])+D_i[job]*(beta*Job[2][job])+J_i *(gamma*Job[2][job])
 
         return ret;
 
@@ -54,5 +54,5 @@ class Functions(initiation):
         return ret
     #recharging time calculator
     def ct(i):
-        θ=1
-        return consumption(i)/ θ;
+        theta=1
+        return consumption(i)/ theta;
