@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 from collections import deque
-
+from init import initiation
 import keras
 import numpy as np
 from keras.layers import Dense, Input
@@ -19,7 +19,7 @@ class DQNAgent:
         self.number_job = number_job
         self.number_feature = number_feature
         self.memory = deque(maxlen=2000)
-        self.epsilon = 0.8  # exploration rate
+        self.epsilon = 0.5  # exploration rate
         self.gamma = 0.95    # discount rate
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
@@ -30,7 +30,10 @@ class DQNAgent:
             # replay the history and train the model
 
             minibatch = random.sample(self.memory, batch_size)
+
             for state, action, reward, next_state, done in minibatch:
+                state = [np.reshape(state[k], (1, 1,)) for k in range(initiation.job_counter)]
+                next_state = [np.reshape(next_state[k], (1, 1,)) for k in range(initiation.job_counter)]
                 target = reward
                 if not done:
                     target = (reward + self.gamma *
@@ -41,7 +44,7 @@ class DQNAgent:
             if self.epsilon > self.epsilon_min:
                 self.epsilon *= self.epsilon_decay
     def _build_subproblem_model(self):
-        # to build the whole model for jobshop
+        # to build the whole model
 
         basic_model = self._submodel()
 
@@ -72,10 +75,10 @@ class DQNAgent:
         return model
 
 
-    def remember(self, state, action, reward, next_state):
+    def remember(self, state, action, reward, next_state,done):
         # remember the information of this step
 
-        self.memory.append((state, action, reward, next_state))
+        self.memory.append((state, action, reward, next_state,done))
 
     def act(self, state):
         # let the agent make a decision
