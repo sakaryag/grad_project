@@ -42,30 +42,29 @@ class method(initiation):
             arr=[0]
             state = np.array(arr*initiation.job_counter)
             state = [np.reshape(state[i], (1, 1,)) for i in range(initiation.job_counter)]  ## state for jobs 0(wait) or 1(assigned)
-
+            next_state=state
             action_list = []        ## list to predict job
             total_time = 0          ## total time of waiting time of job and going + returning time of drone
             oldtotal_time = 0       ## total time is used for giving reward
 
-            for i in range(100*initiation.job_counter):  # because of the random assign, there should be more iterations
+            for i in range(500):  # because of the random assign, there should be more iterations  # REVIEW: should find better way
                 action = agent.act(state)       # act function decides to the action
                 if(initiation.Job[action][4].astype(int)==-1):  # if the selected job is not assigned before
                     time= initiation.Job[action][3]
                     work_time = Functions.g(action,i%initiation.drone_counter)+Functions.r(action,i%initiation.drone_counter)+time.astype(int)
                     state[[action][0]]=1    ## assigned the "action" th cell of state as 1
                     state = [np.reshape(state[k], (1, 1,)) for k in range(initiation.job_counter)]  # reshape state suitable for act function array of arrays
-                    next_state=state
                     for j in range(initiation.Job[i%initiation.drone_counter][5].astype(int),10*initiation.max_time.astype(int)):
                         if(Functions.check_availability(i%initiation.drone_counter,j,j+work_time)==1):      ##check_availability of the drone to "action"th job at first possible time
                             initiation.Job[action][4] =j
                             break
                     method.assign_operation(self,action,i%initiation.drone_counter,initiation.Job[action][4].astype(int)) ## assign
-                    print(i%initiation.drone_counter ,action ,initiation.Job[action][4].astype(int),initiation.Job[action][4].astype(int)+work_time)
-
+                    #print(i%initiation.drone_counter ,action ,initiation.Job[action][4].astype(int),initiation.Job[action][4].astype(int)+work_time)
                     total_time = initiation.Job[action][4]-initiation.Job[action][5] + work_time
                     reward = oldtotal_time - total_time             ##  reward if given according to total time;  if the current total time is smaller than the previous reward is bigger
                     oldtotal_time = total_time
                     agent.remember(state, action, reward, next_state,done)  ## save the state to agent
+                    next_state = [np.reshape(state[k], (1, 1,)) for k in range(initiation.job_counter)]  # reshape state suitable for act function array of arrays
                     state = next_state
                     action_list.append(action)      #append action to list
                     done=True
