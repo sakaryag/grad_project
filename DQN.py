@@ -19,7 +19,7 @@ class DQNAgent:
         self.number_job = number_job
         self.number_feature = number_feature
         self.memory = deque(maxlen=2000)
-        self.epsilon = 0.5  # exploration rate
+        self.epsilon = 0.9  # exploration rate
         self.gamma = 0.95    # discount rate
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
@@ -86,7 +86,6 @@ class DQNAgent:
 
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.number_job)
-
         act_values = self.model.predict(state)
         return np.argmax(act_values[0])  # returns action
 

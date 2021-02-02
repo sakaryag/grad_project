@@ -1,4 +1,3 @@
-
 from numpy import array
 import first_come
 import shortest_time
@@ -18,11 +17,11 @@ def Factory(method):
     problem =method_name[method].method()
 
 if __name__ == "__main__":
+
     print('Enter Your Choice:')
     print('1 -> First Come First Serve')
     print('2 -> Shortest Time Serve')
     print('3 -> New Method')
     print('4 -> Old Method')
-
     x= input()
     Factory(x)

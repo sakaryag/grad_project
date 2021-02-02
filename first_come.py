@@ -14,7 +14,7 @@ class method(initiation):
                     if(Functions.check_availability(y,t,t+Functions.g(job,y)+Functions.r(job,y)+time.astype(int))==1):
                         initiation.result[job][y]=1
                         initiation.Job[job][4]=t+Functions.g(job,y)
-                        print(y ,job ,t,t+Functions.g(job,y)+Functions.r(job,y)+time.astype(int))
+                        #print(y ,job ,t,t+Functions.g(job,y)+Functions.r(job,y)+time.astype(int))
                         for x in range( time.astype(int)+Functions.g(job,y)+Functions.r(job,y)):
                             initiation.Drone[y][x+t]=1
                         return 1;
@@ -22,22 +22,23 @@ class method(initiation):
 
     def assign(self):
 
-        print('2D Numpy Array')
-        print(initiation.Job)
+        #print('2D Numpy Array')
+        #print(initiation.Job)
+        
         columnIndex = 5
         sortedArr = initiation.Job[initiation.Job[:,columnIndex].argsort()]
-        print('Sorted 2D Numpy Array')
+        #print('Sorted 2D Numpy Array')
         sortedArr=sortedArr.astype(int)
-        print(sortedArr)
+        #print(sortedArr)
 
         for x in range(initiation.job_counter):
             method.assign_operation(self,sortedArr[x][0])
         total_waiting=0
         for i in range(initiation.job_counter):
             total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
-        print(total_waiting/initiation.job_counter)
-        print(initiation.Job)
+        print("FC",total_waiting/initiation.job_counter)
+        #print(initiation.Job)
 
-        print(initiation.result)
+        #print(initiation.result)
 
         return 0
