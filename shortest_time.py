@@ -44,9 +44,13 @@ class method(initiation):
 		total_waiting=0
 		for i in range(initiation.job_counter):
 			total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
-		print("ST",total_waiting/initiation.job_counter)
+		print("Result for Shortest Time First",total_waiting/initiation.job_counter)
 		#print(initiation.Job)
 
+		for i in range(initiation.job_counter):
+			initiation.Job[i][4] = -1
+		initiation.Drone =np.zeros((initiation.drone_counter,20*initiation.max_time.astype(int)))
+		initiation.result = np.zeros((initiation.job_counter,initiation.drone_counter))
 		#print(initiation.result)
 
 		return 0

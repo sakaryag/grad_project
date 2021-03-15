@@ -1,12 +1,13 @@
 from init import initiation
 from functions import Functions
 from my_queue import PriorityQueue
-import my_method_old
 import numpy as np
 import DQN
 import random
 import first_come
 import shortest_time
+import my_method_old
+import matplotlib.pyplot as plt
 
 EPISODES = 10000
 
@@ -35,44 +36,18 @@ class method(initiation):
 
 	def assign(self):
 		number_feature = 1
-		batch_size = initiation.job_counter * initiation.drone_counter
+		batch_size = initiation.job_counter * initiation.drone_counter*30
 		agent = DQN.DQNAgent(initiation.job_counter, number_feature)
 		reward=0
-		for e in range(EPISODES):       # episodes for train    ####will be commented
-				######################################
-			initiation.coor_job =np.array([(0,0)]*initiation.job_counter)
-			initiation.coor_target =np.array([(0,0)]*initiation.job_counter)
-			initiation.coor_drone =np.array([(0,0)]*initiation.drone_counter)
-			for i in range(initiation.job_counter):
-				initiation.coor_job[i] = (random.randrange(20),random.randrange(20))
-				initiation.coor_target[i] = (random.randrange(20),random.randrange(20))
+		best = np.zeros(10)
 
-			for j in range(initiation.drone_counter):
-				initiation.coor_drone[j] = (random.randrange(20),random.randrange(20))
-
-			initiation.Job = np.zeros((initiation.job_counter,6))
-			initiation.V =np.array([0]*initiation.drone_counter)
-
-			for i in range(initiation.job_counter):
-				initiation.Job[i][0] = i
-				initiation.Job[i][3] = random.randrange(1,10)
-				initiation.Job[i][4] = -1
-				initiation.Job[i][5] = random.randrange(0,30)
-
-			initiation.result = np.zeros((initiation.job_counter,initiation.drone_counter))
-
+		for m in range (1):
 			max_time=0
 			for i in range(initiation.job_counter):
 				max_time+=initiation.Job[i][3]
 
 			initiation.Drone = np.zeros((initiation.drone_counter,20*max_time.astype(int)))
 
-
-				######################################
-				#agent.load("./save/my_method.h5")       # load the saved data of agent
-			shortest_time.method()
-			first_come.method()
-			my_method_old.method()
 			for i in range(initiation.job_counter):
 				initiation.Job[i][4] = -1
 			initiation.Drone =np.zeros((initiation.drone_counter,20*max_time.astype(int)))
@@ -96,7 +71,6 @@ class method(initiation):
 					state = [np.reshape(state[k], (1, 1,)) for k in range(initiation.job_counter)]  # reshape state suitable for act function array of arrays
 					for j in range(initiation.Job[action][5].astype(int),10*initiation.max_time.astype(int)):
 						if(Functions.check_availability(i%initiation.drone_counter,j,j+work_time)==1):      ##check_availability of the drone to "action"th job at first possible time
-							print(i%initiation.drone_counter,action,j,j+work_time)
 							initiation.Job[action][4] =j
 							break
 					method.assign_operation(self,action,i%initiation.drone_counter,initiation.Job[action][4].astype(int)) ## assign
@@ -105,8 +79,7 @@ class method(initiation):
 					total_time = initiation.Job[action][4]-initiation.Job[action][5]
 					assigned_job = assigned_job+1
 					avarage_wtime = (avarage_wtime + total_time)/ assigned_job
-					reward = reward + (avarage_wtime - total_time  )*10           ##  reward if given according to total time;  if the current total time is smaller than the previous reward is bigger
-
+					reward = reward + (avarage_wtime -total_time  )*100           ##  reward if given according to total time;  if the current total time is smaller than the previous reward is bigger
 					agent.remember(state, action, reward, state,done)  ## save the state to agent
 					action_list.append(action)      #append action to list
 					done=True
@@ -123,12 +96,20 @@ class method(initiation):
 			total_waiting=0
 			for i in range(initiation.job_counter):
 				total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]        ## calculate the waiting time / i tried to minimize that
-			print(total_waiting/initiation.job_counter)
+
+
 			print(initiation.Job)
-			print(initiation.result)
-		if e % 10 == 0:             ## will be commented
-			agent.save("./save/my_method.h5")   ## save agent
-
-
+			#print(initiation.result)
+			for n in range(initiation.job_counter):
+				initiation.Job[n][4] = -1
+			initiation.Drone =np.zeros((initiation.drone_counter,20*initiation.max_time.astype(int)))
+			initiation.result = np.zeros((initiation.job_counter,initiation.drone_counter))
+			flag =0
+			for n in range(initiation.job_counter):
+				if(initiation.Job[n][4] ==-1):
+					flag==1
+			if(flag==0):
+				best[m] = total_waiting/initiation.job_counter
+				print(total_waiting/initiation.job_counter)
 
 		return 0

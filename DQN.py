@@ -8,7 +8,7 @@ from keras.layers import Dense, Input
 from keras.models import Model, Sequential
 from keras.optimizers import Adam
 from keras.utils import plot_model
-
+import matplotlib.pyplot as plt
 
 
 
@@ -19,13 +19,12 @@ class DQNAgent:
         self.number_job = number_job
         self.number_feature = number_feature
         self.memory = deque(maxlen=2000)
-        self.epsilon = 0.9  # exploration rate
+        self.epsilon = 0.3  # exploration rate
         self.gamma = 0.95    # discount rate
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
         self.learning_rate = 0.0005
         self.model = self._build_subproblem_model() # build the model
-
     def replay(self, batch_size):
             # replay the history and train the model
 
@@ -40,9 +39,12 @@ class DQNAgent:
                               np.amax(self.model.predict(next_state)[0]))
                 target_f = self.model.predict(state)
                 target_f[0][action] = target
-                self.model.fit(state, target_f, epochs=1, verbose=0)
+
+                history = self.model.fit(state, target_f, epochs=40, verbose=0)#self.model.fit(state, target_f, epochs=1, verbose=0)
+
             if self.epsilon > self.epsilon_min:
                 self.epsilon *= self.epsilon_decay
+
     def _build_subproblem_model(self):
         # to build the whole model
 
@@ -59,12 +61,17 @@ class DQNAgent:
         model = Model(input_list, out)
         model.compile(loss='mse',
                       optimizer=Adam(lr=self.learning_rate))
+
+        plot_model(model, to_file="gorkem_model.png", show_shapes=True)
+
         return model
 
     def _submodel(self):
         # the sub model called by function  _build_subproblem_model
 
         model = Sequential(name='basic_model')
+        model.add(Dense(24, input_dim=self.number_feature, activation='relu'))
+        model.add(Dense(24, input_dim=self.number_feature, activation='relu'))
         model.add(Dense(24, input_dim=self.number_feature, activation='relu'))
         model.add(Dense(24, input_dim=self.number_feature, activation='relu'))
         model.add(Dense(24, input_dim=self.number_feature, activation='relu'))
@@ -87,7 +94,12 @@ class DQNAgent:
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.number_job)
         act_values = self.model.predict(state)
+        #print("Epsilon:",self.epsilon)
+
         return np.argmax(act_values[0])  # returns action
+
+
+
 
 
     def load(self, name):

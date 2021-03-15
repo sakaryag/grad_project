@@ -24,7 +24,7 @@ class method(initiation):
 
         #print('2D Numpy Array')
         #print(initiation.Job)
-        
+
         columnIndex = 5
         sortedArr = initiation.Job[initiation.Job[:,columnIndex].argsort()]
         #print('Sorted 2D Numpy Array')
@@ -36,9 +36,13 @@ class method(initiation):
         total_waiting=0
         for i in range(initiation.job_counter):
             total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
-        print("FC",total_waiting/initiation.job_counter)
+        print("Result for First Come First Serve",total_waiting/initiation.job_counter)
         #print(initiation.Job)
 
+        for i in range(initiation.job_counter):
+            initiation.Job[i][4] = -1
+        initiation.Drone =np.zeros((initiation.drone_counter,20*initiation.max_time.astype(int)))
+        initiation.result = np.zeros((initiation.job_counter,initiation.drone_counter))
         #print(initiation.result)
 
         return 0
