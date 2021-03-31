@@ -23,5 +23,5 @@ if __name__ == "__main__":
     print('2 -> Shortest Time Serve')
     print('3 -> New Method')
     print('4 -> Old Method')
-    #x= 4
+    #c =input()
     Factory('4')

@@ -62,7 +62,7 @@ class method(initiation):
 			total_time = 0          ## total time of waiting time of job and going + returning time of drone
 			avarage_wtime=0
 			assigned_job=0
-			for i in range(500):  # because of the random assign, there should be more iterations  # REVIEW: should find better way
+			for i in range(500000):  # because of the random assign, there should be more iterations  # REVIEW: should find better way
 				action = agent.act(state)       # act function decides to the action
 				if(initiation.Job[action][4].astype(int)==-1):  # if the selected job is not assigned before
 					time= initiation.Job[action][3]
