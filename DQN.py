@@ -19,10 +19,10 @@ class DQNAgent:
         self.number_job = number_job
         self.number_feature = number_feature
         self.memory = deque(maxlen=2000)
-        self.epsilon = 0.3  # exploration rate
+        self.epsilon = 0.6  # exploration rate
         self.gamma = 0.95    # discount rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.995
+        self.epsilon_decay = 0.99
         self.learning_rate = 0.0005
         self.model = self._build_subproblem_model() # build the model
     def replay(self, batch_size):

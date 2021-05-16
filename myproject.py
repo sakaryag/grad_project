@@ -1,8 +1,8 @@
 from numpy import array
 import first_come
 import shortest_time
-import my_method
-import my_method_old
+import reinforcement
+import newmethod
 import functions
 import init
 

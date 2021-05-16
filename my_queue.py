@@ -34,3 +34,13 @@ class PriorityQueue(object):
 		item = self.queue[min]
 		del self.queue[min]
 		return item
+	def delete_dqn(self):
+		min = 0
+		for i in range(len(self.queue)):
+			if self.queue[i][1]+self.queue[i][2] < self.queue[min][1]+self.queue[min][2]:
+				min = i
+
+		item = self.queue[min]
+	
+		del self.queue[min]
+		return item

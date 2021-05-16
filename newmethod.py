@@ -4,7 +4,7 @@ from my_queue import PriorityQueue
 import first_come
 import numpy as np
 import shortest_time
-import my_method
+import reinforcement
 class method(initiation):
 
 	def __init__(self):
@@ -53,6 +53,9 @@ class method(initiation):
 		total_waiting=0
 		for i in range(initiation.job_counter):
 			total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]
+			if(initiation.Job[i][4]==-1):
+				total_waiting=10000000
+				break
 		print("Result For My New Method",total_waiting/initiation.job_counter)
 		#print(initiation.Job)
 

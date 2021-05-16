@@ -6,10 +6,10 @@ import DQN
 import random
 import first_come
 import shortest_time
-import my_method_old
+import newmethod
 import matplotlib.pyplot as plt
 
-EPISODES = 10000
+EPISODES = 20
 
 class method(initiation):
 
@@ -36,12 +36,12 @@ class method(initiation):
 
 	def assign(self):
 		number_feature = 1
-		batch_size = initiation.job_counter * initiation.drone_counter*30
+		batch_size = initiation.job_counter * initiation.drone_counter*200
 		agent = DQN.DQNAgent(initiation.job_counter, number_feature)
 		reward=0
-		best = np.zeros(10)
+		best = 1000
 
-		for m in range (1):
+		for m in range (EPISODES):
 			max_time=0
 			for i in range(initiation.job_counter):
 				max_time+=initiation.Job[i][3]
@@ -62,7 +62,7 @@ class method(initiation):
 			total_time = 0          ## total time of waiting time of job and going + returning time of drone
 			avarage_wtime=0
 			assigned_job=0
-			for i in range(500000):  # because of the random assign, there should be more iterations  # REVIEW: should find better way
+			for i in range(1000):  # because of the random assign, there should be more iterations  # REVIEW: should find better way
 				action = agent.act(state)       # act function decides to the action
 				if(initiation.Job[action][4].astype(int)==-1):  # if the selected job is not assigned before
 					time= initiation.Job[action][3]
@@ -79,7 +79,7 @@ class method(initiation):
 					total_time = initiation.Job[action][4]-initiation.Job[action][5]
 					assigned_job = assigned_job+1
 					avarage_wtime = (avarage_wtime + total_time)/ assigned_job
-					reward = reward + (avarage_wtime -total_time  )*100           ##  reward if given according to total time;  if the current total time is smaller than the previous reward is bigger
+					reward = reward + (avarage_wtime -total_time  )*500           ##  reward if given according to total time;  if the current total time is smaller than the previous reward is bigger
 					agent.remember(state, action, reward, state,done)  ## save the state to agent
 					action_list.append(action)      #append action to list
 					done=True
@@ -95,21 +95,22 @@ class method(initiation):
 
 			total_waiting=0
 			for i in range(initiation.job_counter):
+				if(initiation.Job[i][4]==-1):
+					total_waiting=1000
+					break
 				total_waiting+=initiation.Job[i][4]-initiation.Job[i][5]        ## calculate the waiting time / i tried to minimize that
 
 
-			print(initiation.Job)
+			#print(initiation.Job)
 			#print(initiation.result)
 			for n in range(initiation.job_counter):
 				initiation.Job[n][4] = -1
 			initiation.Drone =np.zeros((initiation.drone_counter,20*initiation.max_time.astype(int)))
 			initiation.result = np.zeros((initiation.job_counter,initiation.drone_counter))
 			flag =0
-			for n in range(initiation.job_counter):
-				if(initiation.Job[n][4] ==-1):
-					flag==1
-			if(flag==0):
-				best[m] = total_waiting/initiation.job_counter
-				print(total_waiting/initiation.job_counter)
-
+			test = total_waiting/initiation.job_counter
+			if (best>test):
+				best=test
+			print(test)
+		print(best)
 		return 0
