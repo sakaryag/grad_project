@@ -1,3 +1,3 @@
 # grad_project
 
-![Detector Result](./a.jpg)
+![Detector Result](./save/b.jpg)
